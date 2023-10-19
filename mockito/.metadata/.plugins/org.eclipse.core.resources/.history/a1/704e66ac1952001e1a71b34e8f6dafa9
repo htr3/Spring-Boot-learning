@@ -1,0 +1,14 @@
+package com.virus.business;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class TodoBusinessImplStubTest {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}

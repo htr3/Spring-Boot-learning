@@ -1,0 +1,11 @@
+/**
+ * 
+ */
+package com.virus.data.api;
+
+/**
+ * 
+ */
+public interface TodoService {
+
+}

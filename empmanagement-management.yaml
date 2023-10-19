@@ -1,0 +1,498 @@
+---
+swagger: "2.0"
+info:
+  description: "\"This contract defines the APIs exposed by Employee management\
+    \ subdomain and customized micro services as part of it.\"\n"
+  version: "1.0"
+  title: "Employee Management Framework"
+  contact:
+    name: "Amdocs Inc."
+    url: "http://www.amdocs.com"
+    email: "support@amdocs.com"
+  license:
+    name: "Amdocs Inc."
+    url: "http://www.amdocs.com"
+host: "amdocs.com"
+basePath: "/employeemanagement/v1"
+schemes:
+  - "https"
+paths:
+  /createEmployee:
+    post:
+      tags:
+        - "Employee Management Framework"
+      summary: "create new Employee record"
+      description: "This service creates new employee detail document"
+      operationId: "createEmployee"
+      consumes:
+        - "application/json;charset=utf-8"
+      produces:
+        - "application/json;charset=utf-8"
+      parameters:
+        - name: "Accept-Language"
+          in: "header"
+          description: "Locale of the client\n"
+          required: false
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Employee details that needs to be added"
+          required: true
+          schema:
+            $ref: "#/definitions/EmpInfo"
+      responses:
+        200:
+          description: "Creation was succesfully handled\n"
+        400:
+          description: "Bad Request - The server cannot process the request due\
+            \ to a malformed syntax. The response can be caused by missing mandatory\
+            \ query parameters, invalid value in the query parameters, validation\
+            \ exceptions, and so on.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden - The server refuses to apply the request because\
+            \ the client does not have access rights to the content.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict - The server cannot complete the request due to\
+            \ a conflict with the current state of the resource.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        502:
+          description: "Bad Gateway - The server encountered an unexpected condition\
+            \ when calling another service.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+      x-amdocs:
+        route-service: "empmanagement-ntnet-service"
+        private-roles:
+          - "FndP_APIGateway_gw"
+  /deleteEmployeeDetails/{employeesId}:
+    delete:
+      tags:
+        - "Employee Management Framework"
+      summary: "delete multiple employee details."
+      description: "This service deletes multiple employee detail document"
+      operationId: "deleteEmployee"
+      consumes:
+        - "application/json;charset=utf-8"
+      produces:
+        - "application/json;charset=utf-8"
+      parameters:
+        - name: "Accept-Language"
+          in: "header"
+          description: "Locale of the client\n"
+          required: false
+          type: "string"
+        - name: "employeesId"
+          in: "path"
+          description: "Unique identifier of the Employees id\n"
+          required: true
+          type: "array"
+          items:
+            type: "string"
+      responses:
+        200:
+          description: "Deletion was succesfully handled\n"
+          schema:
+            $ref: "#/definitions/ListofEmployee"
+        400:
+          description: "Bad Request - The server cannot process the request due\
+            \ to a malformed syntax. The response can be caused by missing mandatory\
+            \ query parameters, invalid value in the query parameters, validation\
+            \ exceptions, and so on.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden - The server refuses to apply the request because\
+            \ the client does not have access rights to the content.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict - The server cannot complete the request due to\
+            \ a conflict with the current state of the resource.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        502:
+          description: "Bad Gateway - The server encountered an unexpected condition\
+            \ when calling another service.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+      x-amdocs:
+        route-service: "empmanagement-ntnet-service"
+        private-roles:
+          - "FndP_APIGateway_gw"
+  /getEmployeeDetails/{employeeId}:
+    get:
+      tags:
+        - "Employee Management Framework"
+      summary: "Get employee details."
+      description: "This service get particular employee detail document"
+      operationId: "getEmployee"
+      consumes:
+        - "application/json;charset=utf-8"
+      produces:
+        - "application/json;charset=utf-8"
+      parameters:
+        - name: "Accept-Language"
+          in: "header"
+          description: "Locale of the client\n"
+          required: false
+          type: "string"
+        - name: "employeeId"
+          in: "path"
+          description: "Unique identifier of the Employee id\n"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "EmployeeDetails is fetched succesfully\n"
+          schema:
+            $ref: "#/definitions/EmpInfo"
+        400:
+          description: "Bad Request - The server cannot process the request due\
+            \ to a malformed syntax. The response can be caused by missing mandatory\
+            \ query parameters, invalid value in the query parameters, validation\
+            \ exceptions, and so on.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden - The server refuses to apply the request because\
+            \ the client does not have access rights to the content.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict - The server cannot complete the request due to\
+            \ a conflict with the current state of the resource.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        502:
+          description: "Bad Gateway - The server encountered an unexpected condition\
+            \ when calling another service.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+      x-amdocs:
+        route-service: "empmanagement-ntnet-service"
+        private-roles:
+          - "FndP_APIGateway_gw"
+  /updateEmployeeDetails:
+    patch:
+      tags:
+        - "Employee Management Framework"
+      summary: "update multiple Employee record"
+      description: "This service update employee detail document"
+      operationId: "updateEmployee"
+      consumes:
+        - "application/json;charset=utf-8"
+      produces:
+        - "application/json;charset=utf-8"
+      parameters:
+        - name: "Accept-Language"
+          in: "header"
+          description: "Locale of the client\n"
+          required: false
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Unique identifier of the Employees id"
+          required: true
+          schema:
+           $ref: "#/definitions/ListofUpdateEmployee"
+      responses:
+        200:
+          description: "Updation was succesfully handled\n"
+        400:
+          description: "Bad Request - The server cannot process the request due\
+            \ to a malformed syntax. The response can be caused by missing mandatory\
+            \ query parameters, invalid value in the query parameters, validation\
+            \ exceptions, and so on.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden - The server refuses to apply the request because\
+            \ the client does not have access rights to the content.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict - The server cannot complete the request due to\
+            \ a conflict with the current state of the resource.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        502:
+          description: "Bad Gateway - The server encountered an unexpected condition\
+            \ when calling another service.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+      x-amdocs:
+        route-service: "empmanagement-ntnet-service"
+        private-roles:
+          - "FndP_APIGateway_gw"
+definitions:
+  ErrorResponse:
+    type: "object"
+    discriminator: "@type"
+    properties:
+      code:
+        type: "string"
+        description: "The code of the response\n"
+      reason:
+        type: "string"
+        description: "Explanation of the reason for the error which can be shown to\
+          \ a client user"
+      message:
+        type: "string"
+        description: "The response text"
+      status:
+        type: "string"
+        description: "HTTP Error code extension"
+      link:
+        type: "string"
+        format: "url"
+        description: "The reference to the item deprecated`"
+      rel:
+        type: "string"
+        description: "The relation type of the item `deprecated`"
+        default: "help"
+      referenceError:
+        type: "string"
+        format: "uri"
+        description: "URI of documentation describing the error"
+      traceId:
+        type: "string"
+        description: "The unique tracker ID used to facilitate troubleshooting\n"
+      '@type':
+        type: "string"
+        description: "Type of the error\n"
+      characteristics:
+        type: "array"
+        description: "The relevant parameters consumer need which are associated with\
+          \ this error"
+        items:
+          $ref: "#/definitions/Characteristics"
+    description: "\"Used when an API throws an Error, typically with a HTTP error\
+      \ response-code (3xx, 4xx, 5xx)\"\"\n"
+  Characteristics:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      value:
+        type: "string"
+    description: "List of relevant parameters consumer need which are associated with\
+      \ this entity\n"
+  Error:
+    type: "object"
+    required:
+      - "code"
+      - "message"
+    properties:
+      code:
+        type: "string"
+        description: "Error code relevant to an application, defined in the API or\
+          \ in a common list\n"
+      reason:
+        type: "string"
+        description: "Explanation of the reason for the error that can be displayed\
+          \ to a user\n"
+      message:
+        type: "string"
+        description: "Additional information about the error  and corrective actions\
+          \ related to the error that can be displayed to a user\n"
+      status:
+        type: "string"
+        description: "HTTP error code extension\n"
+      referenceError:
+        type: "string"
+        format: "uri"
+        description: "URI of the documentation describing the error\n"
+      traceId:
+        type: "string"
+        description: "Unique tracker ID that is used to facilitate the troubleshooting\n"
+      '@type':
+        type: "string"
+        description: "Type of the error\n"
+      characteristic:
+        type: "array"
+        description: "Charachteristic parameters that are associated with the error\n"
+        items:
+          $ref: "#/definitions/ErrorCharacteristic"
+    description: "Error response. This object is used when an API throws an error,\
+      \ typically with a HTTP error response codes 3xx, 4xx, and 5xx\n"
+  ErrorCharacteristic:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Non-localized name identifier of the characteristic\n"
+      value:
+        type: "string"
+        description: "Value of the characteristic\n"
+    description: "Parameter that is associated with the error entity\n"
+  EmpInfo:
+    type: "object"
+    properties:
+      empId:
+        type: "string"
+        description: "Unique identifier of the Employee"
+      empName:
+        type: "string"
+        description: "Full Name of the Employee"
+      empType:
+        type: "string"
+        description: "senority (graduate or lateral) of the Employee"
+      skills:
+        type: "array"
+        description: "skills set as list.\n"
+        items:
+          type: "string"
+      empAddress:
+        $ref: "#/definitions/Address"
+        
+  EmpUpdate:
+    type: "object"
+    properties:
+      empId:
+        type: "string"
+        description: "Unique identifier of the Employee"
+      newEmpType:
+        type: "string"
+        description: "new Employee type of the Employee"
+        
+  ListofUpdateEmployee:
+    type: "array"
+    items:
+      $ref: "#/definitions/EmpUpdate"
+    
+  ListofEmployee:
+    type: "array"
+    items:
+      $ref: "#/definitions/EmpInfo"
+  Address:
+    type: "object"
+    properties:
+      city:
+        type: "string"
+        description: "city in which employee stays"
+      state:
+        type: "string"
+        description: "state in which employee stays"
+      country:
+        type: "string"
+        description: "country in which employee stays"
+parameters:
+  header-locale:
+    name: "Accept-Language"
+    in: "header"
+    description: "Locale of the client\n"
+    required: false
+    type: "string"
+  query-appId:
+    name: "appId"
+    in: "query"
+    description: "Unique identifier of the application that is calling the API.\n\
+      This identifier is used to resolve some of the parameters (such as the database\
+      \ connection details) and to uniquely identify the calling application.\n"
+    required: false
+    type: "string"
+    x-dox-NotImplemented: true
+  header-If-Match:
+    name: "If-Match"
+    in: "header"
+    description: "ETag for optimistic locking. If multiple resources are sent in input,\
+      \ all the ETags are sent in a comma-separated list.\n"
+    required: false
+    type: "string"
+  path-extractId:
+    name: "id"
+    in: "path"
+    description: "The correlation id as generate in the bil run system for the specific\
+      \ bill run\n"
+    required: true
+    type: "string"
+responses:
+  400-BadRequest:
+    description: "Bad Request - The server cannot process the request due to malformed\
+      \ syntax.\nThe response can be caused by missing mandatory query parameters,\
+      \ invalid value in the query parameters, validation exceptions, and so on.\n"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  403-ForbiddenRequest:
+    description: "Forbidden - The server refuses to apply the request because the\
+      \ client does not have access rights to the content.\n"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  404-NotFound:
+    description: "Not Found - The server did not find anything matching the request\
+      \ URI. The response can be caused by missing path parameters, invalid WEB resource,\
+      \ and so on.\n"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  409-Conflict:
+    description: "Conflict - The server cannot complete the request due to a conflict"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  412-PreconditionFailed:
+    description: "Precondition Failed - The server cannot complete the request due\
+      \ to the failure in the precondition validation of the resource.\nThe response\
+      \ can be caused by a mismatch of the ETag inside the If-Match header with the\
+      \ entity ETag value that is requested to be updated.\n"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  500-InternalServerError:
+    description: "Internal Server Error - The server encountered an unexpected condition\
+      \ that prevented it from fulfilling the request.\n"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  502-BadGateway:
+    description: "Bad Gateway - The server encountered an unexpected condition when\
+      \ calling another service.\n"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  503-ServiceUnavailable:
+    description: "Internal Server Error - The server cannot fulfill the request\
+      \ due to a temporary overloading or maintenance of the server. Retry later.\
+      \ \n"
+    schema:
+      $ref: "#/definitions/ErrorResponse"

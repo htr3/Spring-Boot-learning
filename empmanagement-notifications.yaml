@@ -1,0 +1,236 @@
+---
+swagger: "2.0"
+info:
+  description: "Notifications published and consumed by Employee Management subdomain.\n"
+  version: "1.0"
+  title: "Notification Specification - Employee Management Notifications Framework"
+  contact:
+    name: "Amdocs Inc."
+    url: "http://www.amdocs.com"
+    email: "support@amdocs.com"
+  license:
+    name: "Amdocs Inc."
+    url: "http://www.amdocs.com"
+host: "amdocs.com"
+basePath: "/employeemanagement/v1"
+schemes:
+- "https"
+paths:
+  /employeeCreatedNotification:
+    get:
+      tags:
+      - "Employee Management Framework"
+      summary: "Employee Documents Created Notification"
+      description: "This notification is published when new Employee is created"
+      operationId: "EmployeeCreatedNotification"
+      parameters: []
+      responses:
+        204:
+          description: "No Content\n"
+          schema:
+            $ref: "#/definitions/EmployeeCreatedNotification"
+  /requestEmployeeCountNotification:
+    get:
+      tags:
+      - "Employee Management Framework"
+      summary: "Request the Employee Count of particular type"
+      description: "This notification is published when Employee count is requested"
+      operationId: "RequestEmployeeCountNotification"
+      parameters: []
+      responses:
+        204:
+          description: "No Content\n"
+          schema:
+            $ref: "#/definitions/RequestEmployeeCountNotification"
+  /employeeCountNotification:
+    get:
+      tags:
+      - "Employee Management Framework"
+      summary: "Retrive the Employee Count of particular type"
+      description: "This notification is published when Employee count is retrive"
+      operationId: "EmployeeCountNotification"
+      parameters: []
+      responses:
+        204:
+          description: "No Content\n"
+          schema:
+            $ref: "#/definitions/RetriveEmployeeCountNotification"
+definitions:
+  EmployeeCreatedNotification:
+    allOf:
+    - $ref: "#/definitions/Notification"
+    - type: "object"
+      properties:
+        event:
+          $ref: "#/definitions/EmployeeCreatedEvent"
+          
+  RetriveEmployeeCountNotification:
+    allOf:
+    - $ref: "#/definitions/Notification"
+    - type: "object"
+      properties:
+        event:
+          $ref: "#/definitions/EmployeeCountRetriveNotification"
+  
+  EmployeeCountRetriveNotification:
+    allOf:
+    - $ref: "#/definitions/Event"
+    - type: "object"
+      properties:
+        EmployeeTypeCountResponse:
+          $ref: "#/definitions/EmployeeTypeCountResponse"
+          
+  EmployeeTypeCountResponse:
+    type: "object"
+    properties:
+      correlationId:
+        type: "string"
+        description: "Unique identifier of the Employee"
+      empType:
+        type: "string"
+        description: "senority (graduate or lateral) of the Employee"
+      count:
+        type: "string"
+        description: "number of employees in particular type"
+  RequestEmployeeCountNotification:
+    allOf:
+    - $ref: "#/definitions/Notification"
+    - type: "object"
+      properties:
+        event:
+          $ref: "#/definitions/EmployeeCountRequestNotification"
+          
+  EmployeeCountRequestNotification:
+    allOf:
+    - $ref: "#/definitions/Event"
+    - type: "object"
+      properties:
+        EmployeeTypeRequest:
+          $ref: "#/definitions/EmployeeTypeRequest"
+          
+  EmployeeTypeRequest:
+    type: "object"
+    properties:
+      correlationId:
+        type: "string"
+        description: "Unique identifier of the Employee"
+      empType:
+        type: "string"
+        description: "senority (graduate or lateral) of the Employee"
+        
+  EmployeeCreatedEvent:
+    allOf:
+    - $ref: "#/definitions/Event"
+    - type: "object"
+      properties:
+        EmployeeInfo:
+          $ref: "#/definitions/EmployeeInfo"
+  EmployeeInfo:
+    type: "object"
+    properties:
+      empId:
+        type: "string"
+        description: "Unique identifier of the Employee"
+      empName:
+        type: "string"
+        description: "Full Name of the Employee"
+      empType:
+        type: "string"
+        description: "senority (graduate or lateral) of the Employee"
+      skills:
+        type: "array"
+        description: "skills set as list.\n"
+        items:
+          type: "string"
+      empAddress:
+        $ref: "#/definitions/Address"
+  Address:
+    type: "object"
+    properties:
+      city:
+        type: "string"
+        description: "city in which employee stays"
+      state:
+        type: "string"
+        description: "state in which employee stays"
+      country:
+        type: "string"
+        description: "country in which employee stays"
+  Notification:
+    type: "object"
+    discriminator: "eventType"
+    properties:
+      securityToken:
+        type: "string"
+        description: "Security Token of the message\n"
+      eventId:
+        type: "string"
+        description: "Identifier of the event\n"
+      eventTime:
+        type: "string"
+        description: "Creation date of the event\n"
+      eventType:
+        type: "string"
+        description: "Name of the notification resource\n"
+      eventClass:
+        type: "string"
+        description: "Fully qualified name of java class serialized in the event\n"
+      eventVersion:
+        type: "string"
+        description: "The version of the event in case there was backward compatibility\
+          \ and there is more then one\n"
+      isResource:
+        type: "boolean"
+        description: "Indicate if the notification is for resource CUD event\n"
+      resourceName:
+        type: "string"
+        description: "Name of resource entity. Filled when isResource is true.\n"
+      deprecated:
+        type: "boolean"
+        description: "Indicator if this event has been deprecated\n"
+      headers:
+        type: "object"
+        description: "Addiitonal data added to the event\n"
+        additionalProperties:
+          type: "string"
+          x-amdocs:
+            refDefinition: "EventHeaders"
+    description: "Notification structure containing the generic fields.\nThis notification\
+      \ structure owns an event structure (SpecificEvent placeholder) linked to\
+      \ the resource concerned by the notification using the resource name as access\
+      \ field (resourceName placeholder).         \n"
+  Event:
+    type: "object"
+    properties:
+      messageKey:
+        type: "string"
+        description: "Unqiue ID of Message in Kafka\n"
+      partitionKey:
+        type: "string"
+        description: "Key used in Kafka for partition\n"
+      name:
+        type: "string"
+        description: "Logical Name of the event\n"
+      type:
+        type: "string"
+        description: "Type of the event such as ResourceCreate, ResourceUpdate. Not\
+          \ filled for business event.\n"
+      key:
+        type: "string"
+        description: "ID of the associated resource entity. Not filled for business\
+          \ event.\n"
+      resourceIdentifier:
+        type: "string"
+        description: "Type of the associated resource entity. Not filled for business\
+          \ event.\n"
+      resourceVersion:
+        type: "string"
+        description: "Version of the associated resource entity. Not filled for business\
+          \ event.\n"
+      optimisticLockingValue:
+        type: "string"
+        description: "The current version of the resource in persistence storage(e-tag).\
+          \ Not filled for business event.\n"
+      deprecated:
+        type: "boolean"
+        description: "Indicator if this event has been deprecated"

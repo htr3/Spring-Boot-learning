@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+
+    <title>student Registration Form </title>
+</head>
+<body>
+
+<h3> Student Registration Form </h3>
+
+
+<form th:action="@{/processStudentForm}" th:object="${student}" method="POST">
+
+First Name: <label>
+    <input th:type="text" th:field="*{firstName}" />
+</label>
+
+    Last Name: <input th:type="text" th:field="*{lastName}" />
+
+
+    <br> <br>
+
+    Country:
+       <select th:field="*{country}">
+<!--           <option th:value="India">India</option>-->
+<!--           <option th:value="Brazil">Brazil</option>-->
+<!--           <option th:value="France">France</option>-->
+<!--           <option th:value="Pakistan">Pakistan</option>-->
+           <option th:each="tempCountry: ${countries}" th:value="${tempCountry}" th:text="${tempCountry}" />
+       </select>
+
+       <br><br>
+       Favorite Programing Language:
+<!--            <input th:type="radio" th:field="*{favoriteLanguage}" th:value="Go">Go</input>-->
+<!--            <input th:type="radio" th:field="*{favoriteLanguage}" th:value="Java">JAVA</input>-->
+<!--            <input th:type="radio" th:field="*{favoriteLanguage}" th:value="Python">Python</input>-->
+
+         <input th:type="radio" th:field="*{favoriteLanguage}" th:each="tempLang : ${languages}" th:value="${tempLang}" th:text="${tempLang}" />
+        <br> <br>
+
+        Favorite Operating System:
+<!--               <input th:type="checkbox" th:field="*{favoriteSystem}" th:value="windows"> windows </input>-->
+<!--                <input th:type="checkbox" th:field="*{favoriteSystem}" th:value="linux"> linux </input>-->
+<!--                <input th:type="checkbox" th:field="*{favoriteSystem}" th:value="macOs"> macOS </input>-->
+
+    <input th:type="checkbox" th:field="*{favoriteSystem}" th:each=" tempSystem : ${system}" th:value="${tempSystem}" th:text="${tempSystem}" />
+
+        <br><br>
+    <input th:type="submit" th:value="Submit" />
+</form>
+
+
+</body>
+</html>

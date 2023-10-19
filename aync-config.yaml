@@ -1,0 +1,15 @@
+async-config:
+  - topic: employee-creation
+    type: EmployeeCreatedNotification
+    published: true
+    consumed: false
+    
+  - topic: request-emp-count
+    type: requestEmployeeCountNotification
+    published: false
+    consumed: true
+    
+  - topic: reponse-emp-count
+    type: employeeCountNotification
+    published: true
+    consumed: false

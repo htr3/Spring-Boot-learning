@@ -1,0 +1,198 @@
+Learn
+1. Secure Spring Boot REST APIs
+2. Define users and roles
+3. Protect URLs based on role
+4. Store users, password and roles in DB(plain-text -> encrypted)
+
+more -> http://www.luv2code.com/spring-security-reference-manual
+
+Spring Security Model
+
+1. Spring Security defines a frmework for securtiy
+2. Implemented usie servlet filters in the background
+3. two methods of securing an app: declarative and programmatic.
+
+
+Spring Security with Servlet Filters
+
+SErvlet Filters are used to pre-process / post-process web requests
+
+Servlet Filters can route web requests based on security logic
+Spring provides a bulk of securety fucntionality with servlet filters. n
+
+Spring Securty overview
+
+web Browser -> Spring Securtiy Filters -> 1. Protected Web Resource, 2. my app sercurity configuratjion , users passwords roles.
+
+Security Concepts
+
+    1. Authentication
+                  - Check user id and password with credentials stored in app / db
+    2.  Authorization
+                     - Check to see if user has an autorixed role
+
+Declarative Security
+
+         Define application's security constraints in configuration
+          All Java config: @Configuration
+
+
+Provides separation of concrns bw application code and security
+
+Programmatic Security
+               Spring Security aprovides an API for custom apllicaion coding
+
+
+Enabling Spring Security
+   1. Edit pom.xml and add spring-boot-starter-security
+
+    2.   automatically secure all endpoints for application
+
+Authentication and Authorization
+In-memory
+JDBC
+LDAP
+Custom/ Pluggable
+others ....
+
+--------------------------------
+
+Create Spring Security Configuration (@Configuration)
+          create a class
+Add users, passwords and roles
+   In Spring Security, passwords are stored using a specific format
+        {id}encodedPassword
+        noop -> Plain text passwords
+        bcrypt -> BCrypt password hashing
+
+        example
+              {noop}test123
+
+------------------------------------------
+
+read all -> employee
+read single -> employee
+create -> manager
+update -> manager
+delete employee -> admin
+
+Restringcting Access to roles
+requestMatchers(<< add path to match on >> )
+             .hasRole(<<authorized role>>)
+
+requestMatchers(<< specify HTTP method: GET, POST, PUT, DELETE >> )
+             .hasRole(<<authorized role>>)
+
+Restring access to multiple roll
+requestMatchers(<< specify HTTP method: GET, POST, PUT, DELETE >> )
+             .hasRoleany(<<authorized role>>)
+
+
+///
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(configurer ->
+                    configurer
+                             .requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
+                             .requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
+                             .requestMatchers(HttpMethod.POST, "/api/employees").hasRole("MANAGER")
+                             .requestMatchers(HttpMethod.PUT, '/api/employees').hasRole("MANAGER")
+                             .requestMatchers(HttpMethod.DELETE/**, "/api/employees").hasRole("ADMIN"));
+
+    http.httpBasic(Customizer.withDefaults());
+
+    return http.build();
+
+
+}
+
+
+Cross-Site Request Forgery (CSRF)
+. Spring Security can protect against CSRF attacks
+> Embed additional authentication data/token into all HTML forms
+> On sebsequent requests, web app willverify token before processing
+
+When to use CSRF Protection ?
+> any normal browser web requests
+HTML forms to add/modify data
+
+
+----------------------------------
+Spring Security User Accounts Stored in Database (JDBC Authentication )
+
+DATABASE Support in Spring Security
+
+Spring Security can read user account info from database
+
+By default, you have to follow Spring Security's predefined table schemas.
+
+-------------------
+DEVELOPMENT PROCESS
+--------------------
+1. Develop SQL Script to set up database tables
+2. Add database support to maven POM file
+3. Create JDBC  properties file
+4. Update Spring Security Configuration to use JDBC.
+-------------------------------
+STEP 1.
+     create table users (
+          username varchar(50) not null,
+          password varchar(50) not null,
+          enabled tinyint not null,
+          PRIMARY KEY(username)
+          ) ENGINE = InnoDB default charset=latin1;
+
+insert into users
+       values
+            ('virus', '{noop}virus115',1),
+            ('naruto', '{noop}naruto115',1),
+            ('hinata', '{noop}hinata115', 1);
+
+create table authorities (
+      username varchar(50) not null,
+      authority varchar(50) not null,
+      unique key authorities_idx_1 (username,authorities),
+
+      constraint authorities_ibfk_1
+      foreign key (username)
+      references users (username)
+      ) ENGINE= InnoDB default charset=latin1;
+
+ insert into authorities
+ values
+ ('virus', 'ROLE_EMPLOYEE'),
+ ('naruto', 'ROLE_EMPLOYEE'),
+ ('virus', 'ROLE_MANAGER'),
+ ('virus', 'ROLE_EMPLOYEE'),
+ ('virus', 'ROLE_MANAGER'),
+ ('virus', 'ROLE_ADMIN');
+
+
+ ------------------------------
+
+ Password Storage ( bcrypt algorithm)
+
+ Spring Security recommends using the popular algorithm bcrypt
+
+ bcrypt ->
+     Performs one-way encrypted hasing.
+     Adds a random salt to the password for additional protection.
+     Includes suppert to defeat brute force attacks.
+
+www.lub2code.com/why-bcrypt
+www.luv2code.com/bcrypt-wiki-page
+www.lub2code.com/password-hashing-best-practieces
+
+
+
+How to Get a Bcypt password
+
+1. Use a website utility to perform the encryption
+
+2. Option 2. Write java code to perform the encryption
+
+Devlopment process
+
+run sql script the contains ecrypted passwords
+       modify DDL for password field, length should be 68
+

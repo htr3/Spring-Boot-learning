@@ -1,0 +1,189 @@
+---
+swagger: "2.0"
+info:
+  description: "\"This contract defines the APIs exposed by Employee management\
+    \ subdomain and customized micro services as part of it.\"\n"
+  version: "1.0"
+  title: "Employee Management Framework"
+  contact:
+    name: "Amdocs Inc."
+    url: "http://www.amdocs.com"
+    email: "support@amdocs.com"
+  license:
+    name: "Amdocs Inc."
+    url: "http://www.amdocs.com"
+host: "amdocs.com"
+basePath: "/employeemanagement/v1"
+schemes:
+  - "https"
+paths:
+  /validateEmployeeSkills:
+    post:
+      tags:
+        - "Employee Management external validation"
+      summary: "validates employee skills if required"
+      description: "This service validate that employee has necessary skills"
+      operationId: "empSkillValidation"
+      consumes:
+        - "application/json;charset=utf-8"
+      produces:
+        - "application/json;charset=utf-8"
+      parameters:
+        - name: "Accept-Language"
+          in: "header"
+          description: "Locale of the client\n"
+          required: false
+          type: "string"
+        - in: "body"
+          name: "EmpSkills"
+          description: "This object defines the expected input fields.\n"
+          required: true
+          schema:
+            $ref: "#/definitions/EmpSkills"
+      responses:
+        200:
+          description: "ProcessStarted - The sync process started succesfully.\n"
+          schema:
+            $ref: "#/definitions/MissingSkills"          
+        400:
+          description: "Bad Request - The server cannot process the request due\
+            \ to a malformed syntax. The response can be caused by missing mandatory\
+            \ query parameters, invalid value in the query parameters, validation\
+            \ exceptions, and so on.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Forbidden - The server refuses to apply the request because\
+            \ the client does not have access rights to the content.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Conflict - The server cannot complete the request due to\
+            \ a conflict with the current state of the resource.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        502:
+          description: "Bad Gateway - The server encountered an unexpected condition\
+            \ when calling another service.\n"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "Internal Server Error - The server encountered an unexpected\
+            \ condition that prevented it from fulfilling the request.\n"
+          schema:
+            $ref: "#/definitions/Error"
+      x-amdocs:
+        route-service: "external-validation-service"
+        private-roles:
+          - "FndP_APIGateway_gw"
+definitions:
+  Error:
+    type: "object"
+    required:
+      - "code"
+      - "message"
+    properties:
+      code:
+        type: "string"
+        description: "Error code relevant to an application, defined in the API or\
+          \ in a common list\n"
+      reason:
+        type: "string"
+        description: "Explanation of the reason for the error that can be displayed\
+          \ to a user\n"
+      message:
+        type: "string"
+        description: "Additional information about the error  and corrective actions\
+          \ related to the error that can be displayed to a user\n"
+      status:
+        type: "string"
+        description: "HTTP error code extension\n"
+      referenceError:
+        type: "string"
+        format: "uri"
+        description: "URI of the documentation describing the error\n"
+      traceId:
+        type: "string"
+        description: "Unique tracker ID that is used to facilitate the troubleshooting\n"
+      '@type':
+        type: "string"
+        description: "Type of the error\n"
+      characteristic:
+        type: "array"
+        description: "Charachteristic parameters that are associated with the error\n"
+        items:
+          $ref: "#/definitions/ErrorCharacteristic"
+    description: "Error response. This object is used when an API throws an error,\
+      \ typically with a HTTP error response codes 3xx, 4xx, and 5xx\n"
+  ErrorCharacteristic:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Non-localized name identifier of the characteristic\n"
+      value:
+        type: "string"
+        description: "Value of the characteristic\n"
+    description: "Parameter that is associated with the error entity\n"
+  EmpSkills:
+    type: "object"
+    properties:
+      empId:
+        type: "string"
+        description: "Unique identifier of the Employee"
+      actualSkills:
+        type: "array"
+        description: "actual skills set as list.\n"
+        items:
+          type: "string"
+      requiredSkills:
+        type: "array"
+        description: "required skills set as list.\n"
+        items:
+          type: "string"
+  MissingSkills:
+    type: "object"
+    properties:
+      empId:
+        type: "string"
+        description: "Unique identifier of the Employee"
+      missingSkills:
+        type: "array"
+        description: "missing skills set as list.\n"
+        items:
+          type: "string" 
+parameters:
+  header-locale:
+    name: "Accept-Language"
+    in: "header"
+    description: "Locale of the client\n"
+    required: false
+    type: "string"
+  query-appId:
+    name: "appId"
+    in: "query"
+    description: "Unique identifier of the application that is calling the API.\n\
+      This identifier is used to resolve some of the parameters (such as the database\
+      \ connection details) and to uniquely identify the calling application.\n"
+    required: false
+    type: "string"
+    x-dox-NotImplemented: true
+  header-If-Match:
+    name: "If-Match"
+    in: "header"
+    description: "ETag for optimistic locking. If multiple resources are sent in input,\
+      \ all the ETags are sent in a comma-separated list.\n"
+    required: false
+    type: "string"
+  path-extractId:
+    name: "id"
+    in: "path"
+    description: "The correlation id as generate in the bil run system for the specific\
+      \ bill run\n"
+    required: true
+    type: "string"

@@ -1,0 +1,114 @@
+-> Components of a Sprping MVC Application
+    > A set of web pages to layout UI components -> Web Pages
+    > A collection of Spring beans(controllers, services, etc...   -> Beans
+    > Spring configuration(XML, Annotions or Java)  -> Spring Configuration
+
+How Spring MVC Front Controller
+   web Browser -> front controller -> Controller -> view Template -> web Browser.
+
+   1. Spring MVC Front Controller
+           - know as DispatcherServlet
+           - Already developed by Spring dev team
+
+           we need to create
+               Model objects
+               view templates
+               Controller classes
+
+    Controller
+        Contains your business ligic
+             Handle the request
+             store/retrieve data (db, web service.....)
+             Place data in model.
+
+        send to appropriate view template.
+
+   Model
+       Model: contain your data
+       store / retrieve data via backend system
+       database, web service, etc....\use a spring bean if you like
+       Place your data in the model
+       data can be any java object / collection.
+
+       View Template
+          Spring MVC is flexible
+          supports many view templates
+
+          recommended: Thymeleaf
+          Developer creates a page
+             Displays data.
+
+     www.lub2code.com/springmvc-views
+
+-------------------------------------------
+
+GetMapping and PostMapping
+    GET : Requests data from given resource
+    POST : Submits data to given resource.
+
+
+sendign data with post method
+
+html form -> request(headers, body) -> spring mvc controller
+
+get                         post
+good for debugging             can't bookmark or email URL
+
+bookmark or email URL            No limitation on data length
+
+Limitation on data length        can also  send binary data
+
+--------------------------------------------------------
+Spring MVC Form Data Binding - Text Fields
+
+Development process
+1. create student class
+2. create student controller
+3. create HTML form
+4. create form processing
+5. create configuration page.
+
+--------------------------------------
+Drop down List
+
+steps
+1. Update HTML form
+2. Update Student class - add getter / setter for new property
+3. Update confirmation page
+
+-----------------------------------------------
+drop down list - 2
+steps
+1. Add list of countries to application.properties file
+2. Inject the countries in the StudentController using @Value
+3. add the list of contries to the model
+4. in HTML form, generate lsit of <optoin> tags for the countries.
+------------------------------------------------------
+Spring MVC Validation
+---------------
+> The need for Validation
+   > required fields
+   > valid format (postal code)
+   > valid numbers in a range
+   > custom business rule
+Java's Standard Bean Validation API
+  > JAVA has a standard Bean Validation API
+  > dEFINES A METADATA MODEL AND api for entity validataion
+  > Spring boot and thymeleaf aslo support the bean validatajion API
+
+  http://www.beanvalidation.org
+
+validation annotation
+NotNull, Min, Max, Size, Pattern,
+
+our road map
+
+set up our development environment
+required field
+validate number range: min, max
+validate using regular expression
+cutom validation.
+
+-------------------------------------------
+
+

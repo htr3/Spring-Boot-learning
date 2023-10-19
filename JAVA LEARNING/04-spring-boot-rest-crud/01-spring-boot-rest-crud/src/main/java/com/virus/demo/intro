@@ -1,0 +1,173 @@
+You will learn how to.....
+Create Rest APIs/Web Services with Spring
+Discuss REST concepts, JSON, and HTTP messaging
+Install REST client tool: Postman
+Develop REST APIs / WEB Services with @RestController
+Build a CRUD interface to the database with Spring REST.
+------
+bussiness problem
+. Build a client app that provides the weather report for a city
+. Need to get weather data from an external service.
+--------------------------
+Application Architecture
+
+My Weather App (App thar we are creating client) <--------------------> Weather Service (provided by External Third Party server)
+
+what is JSON
+javaScript Object Notation
+Lightweight data formate for storing and exchanging data ... plain text
+Language independent .. for all.
+
+{
+ "id": 2,
+"firstName": "Mario",
+"active":true,
+"address": {
+            "street": "greendevine",
+             "languages": ["java", "C#", .....]
+               }
+}
+
+-------------------------
+REST over HTTP
+
+Most common use of REST is over HTTP
+Leverage HTTP methods for CRUD operation.
+HTTP Method                                          CRUD Operation
+Post                        Create a new entity.
+GET                         Read a list of entities or single entity.
+PUT                         Update an existing entity.
+DELETE                  Delete an existing entity.
+
+HTTP Messages
+has 3 part
+1. Request line: the HTTP command (
+2. Header variables: request metadata
+3. Message body: contents.
+
+HTTP Responce Message
+Response line : server protocol and status code
+Header variables: response metadata
+Message body: contents of message
+
+Status Codes
+code Range                         description
+100-199                 Information
+200-299                   Successful
+300-399                   Redirection
+400-499                   Client error
+500-599                    Server error
+
+-----------------------------------------
+MIME CONTENT TYPES
+The message format is described by MIME content type
+Multipurpose Internet Mail-Extension
+
+Basic Syntax: type/sub-type
+
+Example
+text/html, text/plain
+applicatoin/json, application/xml
+
+CLIENT TOOL
+Send HTTP requests to the REST Web Service/API.
+example Postman
+
+rest client                                    rest service
+
+@RestController (Adds REST support)  // Add rest support
+@RequestMapping("/test")
+public class DemoRestController {
+
+   @GetMapping("/hello")  // Access the REST endpoint at /test/hello
+    public String sayVirus() {
+     return "Hello world"; // return content to client
+
+Development process
+-----------------------------------------------------
+Java JSON Data Binding
+
+Data Binding is the process of converting JSON data to a Java POJO.
+
+JSON  <----------> Java POJO
+
+JSON data binding with Jackson
+Spring uses the Jackson Project biniding behind the scenes
+Jackson handles data binding between JSON and Java POJO.
+
+Spring Boot Starter Web automatically includes dependency for Jackson.
+By default, Jackson will call appropriate getter/setter method .
+
+1. Convert JSON to Java POJO ... call setter set method on POJO
+NOTTE: Jackson calls the setXXX methods It does not access internal private fields directly.
+2. Convert JSON to java pojo .. call getter method on pojo
+
+When building Spring REST applications
+Spring will automatically handle Jackson Integration
+JSON odata being passed to REST controller is converted to POJO
+Java object being returned from REST CONTROLLER IS CONVERTED TO json.
+
+Spring Rest Service (Student)
+
+Our REST  Service will return List<Student>
+Need to convert List<Student> to JSON.
+
+Spring will automatically handle Jackson Integration
+JSON odata being passed to REST controller is converted to POJO
+Java object being returned from REST CONTROLLER IS CONVERTED TO json.
+
+Student Pojo class
+Convert JSON to java pojo .. call getter/setter method on pojo
+
+Development process
+
+1. create java pojo class for Student.
+2. Create @RestController
+
+Path Variables
+Retrive a single student by id
+ GET  /virus/students/{studentId}  // Retrieving a single student
+
+rest client  -----------> /virus/students/{studentId} ------> rest service -----> return back data of particular studentId to rest client.
+
+process
+Add request mapping to String REST Service
+Bind path variable to method parameter using @PathVariable.
+
+
+----------------------------------------------------------------------------------------------------------------
+Spring Boot REST Exception Handling.
+
+
+developent process
+
+1 create a custome error responise class
+
+
+2 create a custom exception class
+3 Update SERS servvice to throw exception if student not found
+4 Add an exception handler method using @ExceptionHandler
+ - Define exception handler method with @ExceptionHandler annotation
+ - Exception handler will retur a ResponseEntity
+ - RespoinseEntity is a wrapper for the HTTP response object
+ - ResponseEntity provides fine-grained control to specify:
+   HTTP status code, HTTP heaers and response body.
+
+------------------------------------------------------------
+Global Exception
+
+Exception handler code is only for the specific REST controller, can't be use for other controller.
+
+@ControllerAdvice
+@ControllerAdvice is similar to an interceptor/filter
+Pre-process requests to controllers
+Post-process responses to handle exceptions
+perfect for global exception handling
+
+rest client -> /api/student -> controllerAdvice -> server
+
+devlopmetn process
+create new @ControllerAdvice
+refactor REST servcie... remove exception handling code.
+Add exception handling code to @ControllerAdvice.
+

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Created-By: Maven JAR Plugin 3.2.2
+Build-Jdk-Spec: 11
+Implementation-Title: com.amdocs.digital:ms360sdk-runtime
+Implementation-Version: 7.2.10
+Amdocs-Product: Amdocs Microservices - com.amdocs.digital:ms360sdk-runti
+ me
+Amdocs-Version: 7.2.10
+Build-Date: 08/25/2022 14:15 PM
+Build-Number: 1000
+Spring-Boot-Version: 2.6.4
+Spring-Boot-Classes: 
+Spring-Boot-Lib: MODULE-INF/lib/
+

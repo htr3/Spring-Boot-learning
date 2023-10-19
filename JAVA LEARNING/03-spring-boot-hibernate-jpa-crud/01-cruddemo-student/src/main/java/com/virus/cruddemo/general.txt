@@ -1,0 +1,175 @@
+JAP Dev Process = To Do List
+
+1. Annotate Java Class
+
+2. Develop  Java Code to perform dataabase operation.
+
+ORM -> OBJECT TO RELATIONAL MAPING
+
+java class -> Student -> id : int, firstName: String, lastName: String, email: String;
+throw jpa
+Database table -> student -> id INT, first_name VARCHAR(45), last_name VARCHAR(45), email VARCHAR(45);
+
+Entity class :
+ At a minimum, the Entity class
+ must be annotated with @Entity
+ Must have a public or protected no-argument constructor
+ the class can have other constructors
+
+ ----------------------------------
+ Java Annotations
+  Step 1 : Map class to database table
+
+          @Entity
+          @Table(name = "student")
+          public class Student {
+            .......
+          }
+
+
+  Step 2: Map fields to database columns
+
+              @Entity
+              @Table(name = "student")
+              public class Student {
+                @Id
+                @Column(name="id")
+                private int id;
+
+                @Column(name="first_name")
+                private String firstName;
+                .....
+              }
+
+       NOTE : @Column and @Table is optional
+
+
+JPA Identity - Primary key
+
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+
+example
+                      @Entity
+                      @Table(name = "student")
+                      public class Student {
+                        @Id
+                        @GeneratedValue(strategy=GenerationType.IDENTITY)
+                        @Column(name="id")
+                        private int id;
+
+
+                        .....
+                      }
+
+------------------------
+ID Generation Strategies
+name
+
+GenerationType.AUTO
+GenerationType.IDENTITY
+GenerationType.SEQUENCE
+GenerationType.TABLE
+----------------
+DAO -> Data Access Object
+
+DAO have ->
+save()
+findById()
+findAll()
+findByLastName()
+update()
+delete()
+deleteAll()
+
+--------------------------
+our DAO needs a JPA Entity Manager
+
+JPA Entity Manager is the main component for saving/retrieving entities
+
+student DAO <-> entity manager <-> ............. <-> database
+---------------------------------
+JPA Entity Manager
+. our JPA Entity Manager needs a Data Source
+. The Date Source defines database connection info
+. JPA Entity Manager and Data Source are autometically created by Spring Boot
+. Based on the file: application.properties(JDBC URL, user id, password etc...)
+. We can autowire/inject the JPA Entity Manager into our Student DAO.
+
+student DAO <-> entity manager <-> Data Source <-> database
+
+--------------------------
+
+Student DAO
+
+step 1: define DAO interface
+            void save(Student student)
+step 2: Define DAO implementation
+        class
+        Inject the entity manager
+step 3:  Update main app
+
+---------------------------
+Spring @Transactional
+
+Automagically begin and end a transaction for your JPA code. (Handles transaction management)
+
+@Repository Anotation
+Specialized annotation for repositories
+Supports component Scanning
+Translates JDBC exceptions.
+
+--------------
+how to start auto increament for specific no.
+alter table databaseName.tablename auto_increament=3000
+
+how to reset auto increament
+truncate student_tracker.student
+
+--------------------------
+
+Reading/ retrieving a java Object with JPA
+
+Student mystudent = entityManager.find(Student.class,1(primary key) );
+
+Development process
+1. add new method to dao interface
+        Student findById(integer id);
+2. add new method to dao implementation
+        Student findById(integer id); implement
+3. update main app
+        update with runner;
+-----------------
+
+JPA Query Language ( JPQL )
+Query language for retrieving objects
+
+Similar in concetp to SQL
+ where, like, order by, join, in, etc...
+
+ However, JPQL is based on "entity name and entiy fields"
+
+ ---------------------------
+Retrieving all students
+
+TypedQuery<Student> theQuery = entityManager.createQuery("FROM student(class name)", Student.class);
+List<Student> students = theQuery.getResultList();
+
+-----------------------------------------------
+Development Process
+add new method to DTO interface
+add new method to DTO implementation
+Update main app
+------------------------------------------------
+Create database tables : student
+
+JPA/Hibernate provides an option to automatically create database tables
+create tables based on Java code with JPA/Hibernate annotations
+Useful for development and testing.
+
+In Spring Boot configuration file: application.properties
+spring.jpa.hibernate.ddl-create, none, create-only, drop, create, create-drop, validate, update
+when you run your app, JPA/Hibernate will drop tables the create them
+based on the JPA/Hibernate annotations in your Java code.
+
+------------------------------------------------
+

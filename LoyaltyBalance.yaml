@@ -1,0 +1,326 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    This is the specification of the REST API for loyalty program management. It manages loyaltyBalance resource
+  version: "1.0"
+  title: Loyalty Program Management - Loyalty Balance Entity
+  contact:
+    name: Amdocs
+    url: http://www.amdocs.com
+    email: support@amdocs.com
+  license:
+    name: Amdocs License
+    url: https://www.amdocs.com
+basePath: /sppocloyaltyManagement/v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /loyaltyBalance:
+    post:
+      tags:
+        - LoyaltyBalance
+      summary: Create loyalty balance entity
+      description: "This Operation creates loyalty balance.\n\n**Mandatory:**\n\
+        - \n"
+      operationId: createLoyaltyBalance
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: |
+            The locale of the client
+          required: false
+          type: string
+        - name: salesChannel
+          in: query
+          description: |
+            Sales Channel.
+          required: false
+          type: string
+        - in: body
+          name: LoyaltyBalance
+          description: |
+            The details of the Loyalty Balance
+          required: true
+          schema:
+            $ref: '#/definitions/LoyaltyBalance'
+      responses:
+        201:
+          description: |
+            *OK* - The Loyalty Balance was created successfully.
+          headers:
+            Etag:
+              type: string
+              description: |
+                The entity tag
+              x-dox-Since: 1
+          schema:
+            $ref: '#/definitions/LoyaltyBalance'
+        400:
+          description: |
+            *Bad Request* - The server cannot process the request due to a malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        409:
+          description: |
+            *Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: |
+            *Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        502:
+          description: |
+            *Bad Gateway* - The server encountered an unexpected condition when calling another service.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        503:
+          description: |
+            *Internal Server Error* - The server cannot fulfill the request due to a temporary overloading or maintenance of the server. Retry later.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /loyaltyBalance/{BalanceId}:
+    get:
+      tags:
+        - LoyaltyBalance
+      summary: Retrieve a loyalty balance
+      description: |
+        Retrieve a LoyaltyBalance by its Id
+      operationId: getLoyaltyBalance
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: |
+            The locale of the client
+          required: false
+          type: string
+        - name: salesChannel
+          in: query
+          description: |
+            Sales Channel.
+          required: false
+          type: string
+        - name: fields
+          in: query
+          description: |
+            The subset of attributes which are expected in the response.
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+        - name: BalanceId
+          in: path
+          description: |
+            The ID of the loyaltyBalance
+          required: true
+          type: string
+      responses:
+        200:
+          description: |
+            *OK* - The LoyaltyBalance was retrieved successfully.
+          headers:
+            Etag:
+              type: string
+              description: |
+                The entity tag
+              x-dox-Since: 1
+          schema:
+            $ref: '#/definitions/LoyaltyBalance'
+        400:
+          description: |
+            *Bad Request* - The server cannot process the request due to a malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: |
+            *Not Found* - The server did not find anything matching the request URI. The response can be caused by missing path parameters, invalid WEB resource, and so on.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        409:
+          description: |
+            *Conflict* - The server cannot complete the request due to a conflict with the current state of the resource.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: |
+            *Internal Server Error* - The server encountered an unexpected condition that prevented it from fulfilling the request.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        502:
+          description: |
+            *Bad Gateway* - The server encountered an unexpected condition when calling another service.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        503:
+          description: |
+            *Internal Server Error* - The server cannot fulfill the request due to a temporary overloading or maintenance of the server. Retry later.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+ 
+definitions:
+  LoyaltyBalance:
+    x-amdocs-isRootLevel: true
+    type: object
+    properties:
+      id:
+        type: string
+        description: |
+          Unique identifier of the loyalty balance
+        x-amdocs-keyType: simple    
+      href:
+        type: string
+        description: |
+          URI to access the loyalty balance resource
+      unit:
+        type: string
+        description: |
+          The unit of balance
+      balance:
+        type: string
+        description: |
+          The loyalty balance associated with the account
+      validFor:
+        type: string
+        description: |
+          The validity of balance
+      extensions:
+        type: object
+        additionalProperties:
+          type: object
+          properties: {}
+        x-amdocs:
+          refDefinition: LoyaltyBalanceExtension
+    description: A loyalty rule
+  LoyaltyBalanceAmount:
+    type: object
+    properties:
+      balanceAmount:
+        type: string
+        description: |
+          Unique identifier of the loyalty balance amount
+    description: A loyalty balance amount
+  ErrorResponse:
+    type: object
+    properties:
+      code:
+        type: string
+        description: The code associated with the error
+      message:
+        type: string
+        description: The message associated with the error
+      traceId:
+        type: string
+        description: 'A unique trace id used to correlate an error returned to a client
+          with the server     '
+    description: Response containing descriptive error text, error code
+  Error:
+    x-dox-Since: v10.2
+    description: |
+      Response containing descriptive error text, error code
+    type: object
+    properties:
+      link:
+        type: string
+        format: url
+        description: |
+          The href to the item
+      rel:
+        type: string
+        description: |
+          The relation type for the item
+        default: help
+      code:
+        description: |
+          The code associated with the error
+        type: string
+      message:
+        description: |
+          The message associated with the error
+        type: string  
+parameters:
+  header-total:
+    name: X-Total-Count
+    in: header
+    description: |
+      Total number of records present in the system.
+    required: false
+    type: integer
+    x-dox-Since: 1
+  query-freeText:
+    name: freeText
+    in: query
+    description: |
+      Query parameter to specify the free text. Cross-field search will be performed to match the specified word/s and fetch one or more relevant documents of the same type.
+      _?searchText=[value])_
+    required: false
+    type: string
+    x-dox-Since: 1
+  query-fields:
+    name: fields
+    in: query
+    description: |
+      Parameter to specify the level of details to be returned when the operation is successful. Individual field names can be specified or * can be specified to return all the attributes of a resource. __If not specified, then only the ids will be returned.__
+    required: false
+    type: string
+    x-dox-Since: 1
+responses:
+  400-BadRequest:
+    description: |
+      *Bad Request* - The server cannot process the request due to a malformed syntax. The response can be caused by missing mandatory query parameters, invalid value in the query parameters, validation exceptions, and so on.
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  401-Unauthorized:
+    description: |
+      *Unauthorized* - Indicates that the request has not been applied since because it lacks valid authentication credentials
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  404-NotFound:
+    description: |
+      *Not Found* - Indicates server has not found the requested URI, invalid
+      web resource etc.
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  405-MethodNotAllowed:
+    description: |
+      *Method Not Allowed* - Indicates method (GET/PUT/POST etc.) is not
+      supported for the resource.
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  409-Conflict:
+    description: "*Conflict* - The request could not be completed due to a conflict\
+      \ \nwith the current state of the resource.\n"
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  422-UnProcessableRequest:
+    description: |
+      *Conflict* - The request could not be completed due to a wrong field name,
+      list index or unmatching condition in patch query param.
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  500-InternalServerError:
+    description: |
+      *Internal Server Error* - server failed in handling the
+      client request.
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  502-BadGateway:
+    description: |
+      *Bad Gateway* - Error when calling another service.
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+  503-ServiceUnavailable:
+    description: |
+      *Service Unavailable* - The service being called is unavailable.
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+x-dox-DesignDocs:
+  - description: Geographic Address Entity MS architecture
+    url: http://confluence/display/DEP/Geographic+Address+Microservice+Architecture

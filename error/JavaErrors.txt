@@ -1,0 +1,15 @@
+How to check error :  on command line 
+---------------------------------------------
+1. info
+2. warn
+3. error
+---------------------------------------------
+CHECK each and everything properly. even silly things.  
+
+--------------------------------------------
+error: Cannot resolve symbol 'springframework'
+solution: Go to maven project setting and Click on refresh button .Maven may not be able to sync properly.
+
+error: "No active profile set, falling back to 1 default profile:
+solutin: go to .m2 forlder and delete all in repository folder. rerun the clean test problem solved. 
+solution : ms360 reimport it.
